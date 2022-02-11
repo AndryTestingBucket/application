@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +24,10 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::get('/admin' , [AdminController::class,'index'])->middleware('Admin')->name('admin');
+Route::post('/admin' , [AdminController::class,'addTicket']);
+
+Route::get('/send-email', [FeedbackController::class,'send']);
+
+Route::post('/api' , [ApiController::class,'api'])->name('api');

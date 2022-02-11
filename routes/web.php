@@ -27,6 +27,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::get('/admin' , [AdminController::class,'index'])->middleware('Admin')->name('admin');
 Route::post('/admin' , [AdminController::class,'addTicket']);
+Route::get('/admin/ticket' , [AdminController::class,'ticket'])->middleware('Admin')->name('ticket');
 
 Route::get('/send-email', [FeedbackController::class,'send']);
 

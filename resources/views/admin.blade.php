@@ -36,7 +36,7 @@
     </style>
 </head>
 <body class="antialiased">
-<div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
+<div class="relative flex items-top justify-center bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
     @if (Route::has('login'))
         <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
             @auth
@@ -56,7 +56,7 @@
             <h1>Admin-panel</h1>
 
         </div>
-
+        <h2><a style="color:darkred" href="{{ route('ticket') }}">Нажать и Увидеть все Ticketы</a></h2>
 
     </div>
 </div>
@@ -133,7 +133,6 @@
             <h3>Добавить новый Ticket</h3>
         </button>
     </form>
-
 
 </div>
 <script>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Models\Message;
 use App\Models\ServerCredential;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -102,6 +103,15 @@ class AdminController extends Controller
 
 
         return view('admin', ['succes' => 'Письмо отправлено пользователю']);
+    }
+
+    public function ticket()
+    {
+        $ticket =  DB::table('ticket')->get();
+        $message = DB::table('message')->get();
+        $credentials = DB::table('servercredentials')->get();
+
+        return view('ticket',['tickets'=>$ticket,'messages'=>$message,'credentials'=>$credentials]);
     }
 
 }

@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\FeedbackController;
 use App\Models\ServerCredential;
 use App\Providers\AddMessage;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Http\Request;
@@ -43,10 +45,15 @@ class AddServerCredentials
         $serverCred->save();
         Log::info('Запись успешно произведенаю'.$event->messageId.'.');
 
+        $api = new ApiController();
+        $api->requestUser($ftp_login,$ftp_password);
+
         $feedback = new FeedbackController();
         $feedback->send($ftp_login,$ftp_password);
                 }
             }
         }
     }
+
+
 }

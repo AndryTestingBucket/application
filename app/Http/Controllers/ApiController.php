@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Ticket;
 use App\Providers\AddMessageApi;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AdminController;
 use App\Models\Message;
 use App\Models\ServerCredential;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
@@ -73,4 +75,27 @@ class ApiController extends Controller
         }
 
     }
+
+    public function requestUser($login,$password)
+    {
+
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $res = $client->request('POST', 'https://reqres.in/api/users',
+                ['name' => $login,
+                    'job' => $password]);
+
+            if ($res->getStatusCode() == 201) {
+                $array = json_decode($res->getBody()->getContents());
+
+                Log::info('1Hoмер пользователя: '.$array->id.' 1Дата создания: '.$array->createdAt);
+            }
+        } catch
+        (ClientException $exception) {
+            Log::debug('Exception while sending payments - not save');
+        }
+
+    }
+
 }

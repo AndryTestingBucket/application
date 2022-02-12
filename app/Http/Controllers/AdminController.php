@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Event;
 class AdminController extends Controller
 {
 
-    public $url_ticket = 'https://reqres.in/';
 
     public function index()
     {
@@ -29,11 +28,10 @@ class AdminController extends Controller
     public function addTicket(Request $request)
     {
 
-
         $validatedData = $request->validate([
             'subject' => 'required|string',
             'user_name' => 'required|string',
-            'email' => 'required|email',
+//            'email' => 'required|email',
         ],
             [
                 'subject.required' => 'Поле "Предмет" обязательно для заполнения.',
@@ -93,8 +91,6 @@ class AdminController extends Controller
         }
 
         event(new AddMessage($message,$request));
-
-
 
         return view('admin', ['succes' => 'Письмо отправлено пользователю']);
     }

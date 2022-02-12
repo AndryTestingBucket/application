@@ -96,24 +96,24 @@
         />
         <label>Текст сообщения</label>
         <textarea style="border: 2px solid black"
-                  name="content"
+                  name="content[]"
                   type="text"
                   required>
 
         </textarea>
-        <select name="author">
+        <select name="author[]">
             <option value="client">Client</option>
             <option value="manager">Manager</option>
         </select>
         <input style="border: 2px solid black"
-               name="ftp_login"
+               name="ftp_login[]"
                type="text"
                class="input"
                placeholder="ftp_login"
                required
         />
         <input style="border: 2px solid black"
-               name="ftp_password"
+               name="ftp_password[]"
                type="password"
                class="input"
                placeholder="ftp_password"
@@ -141,7 +141,7 @@
     function addInput() {
         if (x < 10) {
             var str = '' +
-                ' <input style="border: 2px solid black"  name="ftp_login' + (x + 1) + '" type="text" class="input" placeholder="ftp_login" required/><input style="border: 2px solid black"  name="ftp_password' + (x + 1) + '" type="text" class="input" placeholder="ftp_password" required/> <select name="author' + (x + 1) + '"><option value="client">Client</option><option value="manager' + (x + 1) + '">Manager</option></select><textarea style="border: 2px solid black" type="text" class="amount"  name="content">' +
+                ' <input style="border: 2px solid black"  name="ftp_login[' + (x + 1) + ']" type="text" class="input" placeholder="ftp_login" required/><input style="border: 2px solid black"  name="ftp_password[' + (x + 1) + ']" type="text" class="input" placeholder="ftp_password" required/> <select name="author[' + (x + 1) + ']"><option value="client">Client</option><option value="manager' + (x + 1) + '">Manager</option></select><textarea style="border: 2px solid black" type="text" class="amount"  name="content[' + (x + 1) + ']">' +
                 '</textarea><div id="input' + (x + 1) + '">' +
                                 '</div></div>';
 

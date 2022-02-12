@@ -3,17 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Providers\AddMessage;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\FeedbackController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Models\Message;
 use App\Models\ServerCredential;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class AdminController extends Controller
 {
+
+    public $url_ticket = 'https://reqres.in/';
+
     public function index()
     {
         return view('admin');
@@ -22,19 +29,20 @@ class AdminController extends Controller
     public function addTicket(Request $request)
     {
 
+
         $validatedData = $request->validate([
             'subject' => 'required|string',
             'user_name' => 'required|string',
             'email' => 'required|email',
         ],
-        [
-             'subject.required' => 'Поле "Предмет" обязательно для заполнения.',
-             'subject.string' => 'Поле "Предмет" должно быть строкой.',
-             'user_name.required' => 'Поле "Имя пользователя" обязательно для заполнения.',
-             'user_name.string' => 'Поле "Имя пользователя" должно быть строкой.',
-             'email.required' => 'Поле "Email" обязательно для заполнения.',
-             'email.email' => 'Поле "Email" должно содержать @.',
-        ]);
+            [
+                'subject.required' => 'Поле "Предмет" обязательно для заполнения.',
+                'subject.string' => 'Поле "Предмет" должно быть строкой.',
+                'user_name.required' => 'Поле "Имя пользователя" обязательно для заполнения.',
+                'user_name.string' => 'Поле "Имя пользователя" должно быть строкой.',
+                'email.required' => 'Поле "Email" обязательно для заполнения.',
+                'email.email' => 'Поле "Email" должно содержать @.',
+            ]);
 
 
         $uid = Str::uuid()->toString();
@@ -64,42 +72,28 @@ class AdminController extends Controller
 
         $ticket_id = $ticket->id;
 
-        $author = strip_tags($request->all()['author']);
-        $author = htmlspecialchars($author, ENT_QUOTES);
 
-        $content = strip_tags($request->all()['content']);
-        $content = htmlspecialchars($content, ENT_QUOTES);
+        foreach ($request->all()['author'] as $key_author => $author) {
+            foreach ($request->all()['content'] as $key_cont => $content) {
+                if ($key_author == $key_cont) {
 
+                    $message = new Message();
 
-        $message = new Message();
+                    $message->ticket_id = $ticket_id;
+                    $message->author = $author;
+                    $message->content = $content;
 
-        $message->ticket_id = $ticket_id;
-        $message->author = $author;
-        $message->content = $content;
+                    $message->created_at = $now;
+                    $message->updated_at = $now;
 
-        $message->created_at = $now;
-        $message->updated_at = $now;
+                    $message->save();
 
-        $message->save();
+                }
+            }
+        }
 
-        $message_id = $message->id;
+        event(new AddMessage($message,$request));
 
-        $ftp_login = strip_tags($request->all()['ftp_login']);
-        $ftp_login = trim($ftp_login);
-        $ftp_login = Hash::make($ftp_login);
-
-        $ftp_password = Hash::make($request->all()['ftp_password']);
-
-        $serverCred = new ServerCredential();
-
-        $serverCred->message_id = $message_id;
-        $serverCred->ftp_login = $ftp_login;
-        $serverCred->ftp_password = $ftp_password;
-
-        $serverCred->save();
-
-        $feedback = new FeedbackController();
-        $feedback->send();
 
 
         return view('admin', ['succes' => 'Письмо отправлено пользователю']);
@@ -107,11 +101,12 @@ class AdminController extends Controller
 
     public function ticket()
     {
-        $ticket =  DB::table('ticket')->get();
+        $ticket = DB::table('ticket')->get();
         $message = DB::table('message')->get();
         $credentials = DB::table('servercredentials')->get();
 
-        return view('ticket',['tickets'=>$ticket,'messages'=>$message,'credentials'=>$credentials]);
+        return view('ticket', ['tickets' => $ticket, 'messages' => $message, 'credentials' => $credentials]);
     }
+
 
 }

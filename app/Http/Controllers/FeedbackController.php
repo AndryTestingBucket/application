@@ -8,8 +8,8 @@ use App\Mail\FeedbackMail;
 
 class FeedbackController extends Controller
 {
-    public function send() {
-        $comment = 'Это сообщение отправлено из формы обратной связи';
+    public function send($login,$password) {
+        $comment = 'Это сообщение отправлено пользователю .'.$login.'. с паролем'.$password.'.';
         $toEmail = "blader_100@mail.ru";
         Mail::to($toEmail)->send(new FeedbackMail($comment));
         return 'Сообщение отправлено на адрес '. $toEmail;

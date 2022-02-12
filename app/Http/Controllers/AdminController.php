@@ -31,7 +31,15 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'subject' => 'required|string',
             'user_name' => 'required|string',
-//            'email' => 'required|email',
+            'email' => 'required|email|unique:ticket,user_email',
+            'ftp_login' => 'array',
+            'ftp_login.*' => 'required|string',
+            'ftp_password' => 'array',
+            'ftp_password.*' => 'required',
+            'content' => 'array',
+            'author' => 'array',
+            'content.*' => 'required',
+            'author.*' => 'required',
         ],
             [
                 'subject.required' => 'Поле "Предмет" обязательно для заполнения.',
@@ -40,9 +48,19 @@ class AdminController extends Controller
                 'user_name.string' => 'Поле "Имя пользователя" должно быть строкой.',
                 'email.required' => 'Поле "Email" обязательно для заполнения.',
                 'email.email' => 'Поле "Email" должно содержать @.',
+                'email.unique' => 'Поле "Email" должно содержать уникальным.',
+                'ftp_login.array' => 'Поле "Ftp_login" должно быть массивом.',
+                'ftp_login.*.required' => 'Поле "Ftp_login" обязательно для заполнения.',
+                'ftp_login.string.*' => 'Поле "Ftp_login" должно быть строкой.',
+                'ftp_password.array' => 'Поле "Ftp_password" должно быть строкой.',
+                'ftp_password.*.required' => 'Поле "Ftp_password" обязательно для заполнения.',
+                'content.*.required' => 'Поле "Content" обязательно для заполнения.',
+                'content.array' => 'Поле "Content" должно быть массивом.',
+                'author.*.required' => 'Поле "Author" обязательно для заполнения.',
+                'author.array' => 'Поле "Author" должно быть массивом.',
             ]);
 
-
+          dd(75);
         $uid = Str::uuid()->toString();
 
         $subject = strip_tags($request->all()['subject']);

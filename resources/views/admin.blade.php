@@ -60,6 +60,15 @@
 
     </div>
 </div>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="footer" style=" display: flex;
      flex-direction: column;justify-content:center;align-items:center;width: 100%"
      >
@@ -78,27 +87,28 @@
             type="text"
             class="input"
             placeholder="subject"
-            required
+            value="{{ old('subject') }}"
         />
         <input style="border: 2px solid black"
             name="user_name"
             type="text"
             class="input"
             placeholder="user_name"
-            required
+            value="{{ old('user_name') }}"
         />
         <input style="border: 2px solid black"
             name="email"
             type="text"
             class="input"
             placeholder="user_email"
-            required
+            value="{{ old('email') }}"
         />
         <label>Текст сообщения</label>
         <textarea style="border: 2px solid black"
                   name="content[]"
                   type="text"
-                  required>
+                  value="{{ old('content.0') }}"
+                 >
 
         </textarea>
         <select name="author[]">
@@ -110,25 +120,19 @@
                type="text"
                class="input"
                placeholder="ftp_login"
-               required
+               value="{{ old('ftp_login.0') }}"
         />
         <input style="border: 2px solid black"
                name="ftp_password[]"
                type="password"
                class="input"
                placeholder="ftp_password"
-               required
+               value="{{ old('ftp_password.0') }}"
         />
 
         <span id="input0"></span>
         <div class="add" onclick="addInput()">Добавить новое сообщение</div>
 
-{{--        <textarea style="border: 2px solid black"--}}
-{{--                  name="content1"--}}
-{{--                  type="text"--}}
-{{--                  class="input"--}}
-{{--                  required>--}}
-{{--        </textarea>--}}
         <button type="submit">
             <h3>Добавить новый Ticket</h3>
         </button>
@@ -141,7 +145,7 @@
     function addInput() {
         if (x < 10) {
             var str = '' +
-                ' <input style="border: 2px solid black"  name="ftp_login[' + (x + 1) + ']" type="text" class="input" placeholder="ftp_login" required/><input style="border: 2px solid black"  name="ftp_password[' + (x + 1) + ']" type="text" class="input" placeholder="ftp_password" required/> <select name="author[' + (x + 1) + ']"><option value="client">Client</option><option value="manager' + (x + 1) + '">Manager</option></select><textarea style="border: 2px solid black" type="text" class="amount"  name="content[' + (x + 1) + ']">' +
+                ' <input style="border: 2px solid black"  name="ftp_login[' + (x + 1) + ']" type="text" class="input" placeholder="ftp_login"  required/><input style="border: 2px solid black"  name="ftp_password[' + (x + 1) + ']" type="text" class="input" placeholder="ftp_password" required/> <select name="author[' + (x + 1) + ']"><option value="client">Client</option><option value="manager' + (x + 1) + '">Manager</option></select><textarea style="border: 2px solid black" type="text" class="amount"  name="content[' + (x + 1) + ']">' +
                 '</textarea><div id="input' + (x + 1) + '">' +
                                 '</div></div>';
 

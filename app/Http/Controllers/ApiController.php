@@ -89,7 +89,7 @@ class ApiController extends Controller
             if ($res->getStatusCode() == 201) {
                 $array = json_decode($res->getBody()->getContents());
 
-                Log::info('1Hoмер пользователя: '.$array->id.' 1Дата создания: '.$array->createdAt);
+                Log::info('Hoмер пользователя: '.$array->id.' Дата создания: '.$array->createdAt);
             }
         } catch
         (ClientException $exception) {

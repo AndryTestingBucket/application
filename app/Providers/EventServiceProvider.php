@@ -23,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         AddMessage::class => [
             AddServerCredentials::class,
         ],
+        AddMessageApi::class => [
+            AddServerCredentialsApi::class,
+        ],
     ];
 
     /**

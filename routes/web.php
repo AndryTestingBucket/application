@@ -31,4 +31,4 @@ Route::get('/admin/ticket' , [AdminController::class,'ticket'])->middleware('Adm
 
 Route::get('/send-email', [FeedbackController::class,'send']);
 
-Route::post('/api' , [ApiController::class,'api'])->name('api');
+Route::post('/api' , [ApiController::class,'api'])->middleware('token')->name('api');

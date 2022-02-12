@@ -12,22 +12,26 @@ class IsThereAtoken
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
-        if(isset($user)){
+        header('content-type: application/json');
+        $parseJsons = json_decode(file_get_contents("php://input"), true);
+
+        if (isset($user)) {
             if (Hash::check('dplp31qppIkvoxr3lIqsX77BrUrhDhsg9GFk9atO', $user->token)) {
                 return $next($request);
-            } else{
-                abort(403);
             }
-        }
-         else {
-            abort(403);
+        } else {
+
+            if (isset($parseJsons['token']) and $parseJsons['token'] == 'dplp31qppIkvoxr3lIqsX77BrUrhDhsg9GFk9atO') {
+                return $next($request);
+            }
+            return response()->json('{"response":"Error"}', 403, ['Content-Type' => 'application/json; charset=UTF-8']);
         }
     }
 }

@@ -12,7 +12,7 @@ use Exception;
 
 class ApiController extends Controller
 {
-    public function api($json)
+    public function api()
     {
 
         try {
@@ -34,7 +34,9 @@ class ApiController extends Controller
 
             //$test = json_encode ($test, JSON_UNESCAPED_UNICODE);
 
-            $parseJsons = json_decode($json, true);
+            header('content-type: application/json');
+
+            $parseJsons = json_decode(file_get_contents("php://input"), true);
 
             $parseTicket = $parseJsons['ticket'];
 

@@ -15,6 +15,7 @@ use App\Models\Message;
 use App\Models\ServerCredential;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Text_Censure;
 
 class AdminController extends Controller
 {
@@ -27,6 +28,21 @@ class AdminController extends Controller
 
     public function addTicket(Request $request)
     {
+        //проверка на маты.В нашем случае просто плохие слова
+        $bads = ['дурачок','долбоящер','лохопед'];
+        $word = strip_tags($request->all()['user_name']);
+        $word = htmlspecialchars($word, ENT_QUOTES);
+
+        foreach ($bads as $bad){
+            if($word == $bad){
+                if($word == 'долбоящер'){
+                    return view('admin', ['succes' => 'Уважай живые существа,исправь значение "user_name"!!!']);
+                }else{
+                    return view('admin', ['succes' => 'Не используйте плохие слова для поля "user_name"!!!']);
+                }
+            }
+        }
+
 
         $validatedData = $request->validate([
             'subject' => 'required|string',
@@ -60,7 +76,6 @@ class AdminController extends Controller
                 'author.array' => 'Поле "Author" должно быть массивом.',
             ]);
 
-          dd(75);
         $uid = Str::uuid()->toString();
 
         $subject = strip_tags($request->all()['subject']);

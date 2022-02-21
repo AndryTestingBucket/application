@@ -18,19 +18,11 @@ class IsThereAtoken
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::user();
-        header('content-type: application/json');
-        $parseJsons = json_decode(file_get_contents("php://input"), true);
 
-        if (isset($user)) {
-            if (Hash::check('dplp31qppIkvoxr3lIqsX77BrUrhDhsg9GFk9atO', $user->token)) {
+        $token = $request->header('x-auth-token');
+        if (isset($token) and Hash::check('dplp31qppIkvoxr3lIqsX77BrUrhDhsg9GFk9atO', $token)) {
                 return $next($request);
-            }
         } else {
-
-            if (isset($parseJsons['token']) and $parseJsons['token'] == 'dplp31qppIkvoxr3lIqsX77BrUrhDhsg9GFk9atO') {
-                return $next($request);
-            }
             return response()->json('{"response":"Error"}', 403, ['Content-Type' => 'application/json; charset=UTF-8']);
         }
     }

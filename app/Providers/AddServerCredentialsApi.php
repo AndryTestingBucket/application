@@ -35,8 +35,8 @@ class AddServerCredentialsApi
             $serverCred = new ServerCredential();
 
             $serverCred->message_id = $event->messageId;
-            $serverCred->ftp_login = $ftp['ftp_login'];
-            $serverCred->ftp_password = $ftp['ftp_password'];
+            $serverCred->ftp_login = htmlspecialchars(strip_tags($ftp['ftp_login'],ENT_QUOTES));
+            $serverCred->ftp_password = strip_tags($ftp['ftp_password'],ENT_QUOTES);
 
             $serverCred->save();
             Log::info('Запись Api успешно произведенаю' . $event->messageId . '.');

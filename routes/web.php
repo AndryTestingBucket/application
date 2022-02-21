@@ -24,10 +24,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/admin' , [AdminController::class,'index'])->middleware('Admin')->name('admin');
-Route::post('/admin' , [AdminController::class,'addTicket']);
-Route::get('/admin/ticket' , [AdminController::class,'ticket'])->middleware('Admin')->name('ticket');
+Route::prefix('admin')->middleware('Admin')->group(function () {
+    Route::get('/' , [AdminController::class,'index'])->name('admin');
+    Route::post('/' , [AdminController::class,'addTicket']);
+    Route::get('/ticket' , [AdminController::class,'ticket'])->name('ticket');
+});
 
-Route::get('/send-email', [FeedbackController::class,'send']);
+Route::get('/send-email', [FeedbackController::class,'send'])->middleware('Admin');
 
-Route::post('/api' , [ApiController::class,'api'])->middleware('token')->name('api');
+Route::post('/api' , [ApiController::class,'api'])->name('api');

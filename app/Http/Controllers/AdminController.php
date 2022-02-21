@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Models\Message;
 use App\Models\ServerCredential;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
 class AdminController extends Controller
@@ -129,9 +128,9 @@ class AdminController extends Controller
 
     public function ticket()
     {
-        $ticket = DB::table('ticket')->get();
-        $message = DB::table('message')->get();
-        $credentials = DB::table('servercredentials')->get();
+        $ticket = Ticket::all();
+        $message = Message::all();
+        $credentials = ServerCredential::all();
 
         return view('ticket', ['tickets' => $ticket, 'messages' => $message, 'credentials' => $credentials]);
     }

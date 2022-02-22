@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
-    public function api(Request $request)
+    public function api()
     {
 
         try {

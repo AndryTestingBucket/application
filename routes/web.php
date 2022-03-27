@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\VueController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +33,8 @@ Route::prefix('admin')->middleware('Admin')->group(function () {
 });
 
 Route::get('/send-email', [FeedbackController::class,'send'])->middleware('Admin');
+
+Route::get('/vue', [VueController::class,'index'])->name('api');
 
 Route::post('/api' , [ApiController::class,'api'])->middleware('token')->name('api');
 
